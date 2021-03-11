@@ -22,7 +22,8 @@ CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     card_id INTEGER REFERENCES cards,
-    sent_at TIMESTAMP
+    sent_at TIMESTAMP,
+    result INTEGER
 );
 
 CREATE TABLE reviews (
