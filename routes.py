@@ -27,7 +27,24 @@ def deck(id):
     info = decks.get_deck_info(id)
     size = decks.get_deck_size(id)
     total, correct = stats.get_deck_stats(id, users.user_id())
-    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size, total=total, correct=correct)
+    reviews = decks.get_reviews(id)
+    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size, total=total, correct=correct, reviews=reviews)
+
+@app.route("/review", methods=["post"])
+def review():
+    users.require_role(1)
+    users.check_csrf()
+    deck_id = request.form["deck_id"]
+    stars = int(request.form["stars"])
+    if stars < 1 or stars > 5:
+        return render_template("error.html", message="Virheellinen tähtimäärä")
+    comment = request.form["comment"]
+    if len(comment) > 1000:
+        return render_template("error.html", message="Kommentti on liian pitkä")
+    if comment == "":
+        comment = "-"
+    decks.add_review(deck_id, users.user_id(), stars, comment)
+    return redirect("/deck/"+str(deck_id))
 
 @app.route("/play/<int:id>")
 def play(id):

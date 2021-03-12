@@ -45,3 +45,12 @@ def send_answer(card_id, answer, user_id):
     sql = "INSERT INTO answers (user_id, card_id, sent_at, result) VALUES (:user_id, :card_id, NOW(), :result)"
     db.session.execute(sql, {"user_id":user_id, "card_id":card_id, "result":result})
     db.session.commit()
+
+def get_reviews(deck_id):
+    sql = "SELECT u.name, r.stars, r.comment FROM reviews r, users u WHERE r.user_id=u.id AND r.deck_id=:deck_id ORDER BY r.id"
+    return db.session.execute(sql, {"deck_id": deck_id}).fetchall()
+
+def add_review(deck_id, user_id, stars, comment):
+    sql = "INSERT INTO reviews (deck_id, user_id, stars, comment) VALUES (:deck_id, :user_id, :stars, :comment)"
+    db.session.execute(sql, {"deck_id":deck_id, "user_id":user_id, "stars":stars, "comment":comment})
+    db.session.commit()
