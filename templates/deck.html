@@ -9,8 +9,20 @@
 </ul>
 
 {% if session.user_id %}
-<a href="/play/{{ id }}">Aloita pelaaminen</a> |
+<p><a href="/play/{{ id }}">Aloita pelaaminen</a></p>
+
+<h3>Omat tilastot</h3>
+
+<ul>
+<li>Olet pelannut <b>{{ total }}</b> korttia
+<li>Vastasit oikein <b>{{ correct }}</b> kertaa
+<li>Vastasit väärin <b>{{ total-correct }}</b> kertaa
+</ul>
+
 {% endif %}
+
+
+<p>
 <a href="/">Palaa takaisin</a>
 
 {% endblock %}

@@ -1,6 +1,4 @@
 from db import db
-from flask import session
-from werkzeug.security import check_password_hash, generate_password_hash
 from random import randint
 
 def get_list():
@@ -46,3 +44,4 @@ def send_answer(card_id, answer, user_id):
     result = 1 if answer == correct else 0
     sql = "INSERT INTO answers (user_id, card_id, sent_at, result) VALUES (:user_id, :card_id, NOW(), :result)"
     db.session.execute(sql, {"user_id":user_id, "card_id":card_id, "result":result})
+    db.session.commit()

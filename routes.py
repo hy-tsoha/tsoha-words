@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, request, redirect
-import decks, users
+import decks, stats, users
 
 @app.route("/")
 def index():
@@ -20,7 +20,8 @@ def add():
 def deck(id):
     info = decks.get_deck_info(id)
     size = decks.get_deck_size(id)
-    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size)
+    total, correct = stats.get_my_stats(id, users.user_id())
+    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size, total=total, correct=correct)
 
 @app.route("/play/<int:id>")
 def play(id):
