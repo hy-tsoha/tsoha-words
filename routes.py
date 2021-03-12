@@ -8,11 +8,16 @@ def index():
 
 @app.route("/add", methods=["get", "post"])
 def add_deck():
+    users.require_role(2)
     if request.method == "GET":
         return render_template("add.html")
     if request.method == "POST":
         name = request.form["name"]
+        if len(name) < 1 or len(name) > 20:
+            return render_template("error.html", message="Nimessä tulee olla 1-20 merkkiä")
         words = request.form["words"]
+        if len(words) > 10000:
+            return render_template("error.html", message="Sanalista on liian pitkä")
         deck_id = decks.create(name, words, users.user_id())
         return redirect("/deck/"+str(deck_id))
 
@@ -25,11 +30,13 @@ def deck(id):
 
 @app.route("/play/<int:id>")
 def play(id):
+    users.require_role(1)
     card = decks.get_random_card(id)
     return render_template("play.html", deck_id=id, card_id=card[0], question=card[1])
 
 @app.route("/result", methods=["post"])
 def result():
+    users.require_role(1)
     deck_id = request.form["deck_id"]
     card_id = request.form["card_id"]
     answer = request.form["answer"].strip()
@@ -60,10 +67,14 @@ def register():
         return render_template("register.html")
     if request.method == "POST":
         username = request.form["username"]
+        if len(username) < 1 or len(username) > 20:
+            return render_template("error.html", message="Tunnuksessa tulee olla 1-20 merkkiä")
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         if password1 != password2:
             return render_template("error.html", message="Salasanat eroavat")
+        if password1 == "":
+            return render_template("error.html", message="Salasana on tyhjä")
         role = request.form["role"]
         if role != "1" and role != "2":
             return render_template("error.html", message="Tuntematon käyttäjärooli")
@@ -74,5 +85,6 @@ def register():
 
 @app.route("/stats")
 def show_stats():
+    users.require_role(2)
     data = stats.get_full_stats(users.user_id())
     return render_template("stats.html", data=data)
