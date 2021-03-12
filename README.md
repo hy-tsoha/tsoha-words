@@ -12,3 +12,5 @@ Sovelluksen ominaisuuksia ovat:
 * Opettaja voi luoda uuden pakan antamalla pakan nimen ja sanalistan tekstimuodossa.
 * Opettaja voi poistaa luomansa pakan.
 * Opettaja voi katsoa tilastoja, jossa näkyy jokaisesta hänen luomastaan pakasta kunkin opiskelijan tilastot.
+
+Sovellus on testattavissa [Herokussa](https://tsoha-words.herokuapp.com/).
