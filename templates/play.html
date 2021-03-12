@@ -1,0 +1,11 @@
+<form action="/result" method="post">
+
+<p>Kirjoita käännös sanalle <b>{{ question }}</b>:
+<input type="text" name="answer"></p>
+
+<input type="hidden" name="deck_id" value="{{ deck_id }}">
+<input type="hidden" name="card_id" value="{{ card_id }}">
+
+<input type="submit" value="Lähetä">
+
+</form>

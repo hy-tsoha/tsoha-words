@@ -1,19 +1,29 @@
 from db import db
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
+from random import randint
 
 def get_list():
     sql = "SELECT id, name FROM decks ORDER BY name"
     return db.session.execute(sql).fetchall()
 
-def get_deck(id):
+def get_deck_info(id):
     sql = "SELECT d.name, u.name FROM decks d, users u WHERE d.id = :id AND d.creator_id = u.id"
-    info = db.session.execute(sql, {"id": id}).fetchone()
+    return db.session.execute(sql, {"id": id}).fetchone()
 
+def get_deck_size(id):
     sql = "SELECT COUNT(*) FROM cards WHERE deck_id = :id"
-    size = db.session.execute(sql, {"id": id}).fetchone()
+    return db.session.execute(sql, {"id": id}).fetchone()[0]
 
-    return (info[0], info[1], size[0])
+def get_random_card(deck_id):
+    size = get_deck_size(deck_id)
+    pos = randint(0, size-1)
+    sql = "SELECT id, word1 FROM cards WHERE deck_id=:deck_id LIMIT 1 OFFSET :pos"
+    return db.session.execute(sql, {"deck_id":deck_id, "pos":pos}).fetchone()
+
+def get_card_words(id):
+    sql = "SELECT word1, word2 FROM cards WHERE id=:id"
+    return db.session.execute(sql, {"id":id}).fetchone()
 
 def create(name, words, creator_id):
     sql = "INSERT INTO decks (creator_id, name) VALUES (:creator_id, :name) RETURNING id"
@@ -29,3 +39,10 @@ def create(name, words, creator_id):
 
     db.session.commit()
     return deck_id
+
+def send_answer(card_id, answer, user_id):
+    sql = "SELECT word2 FROM cards WHERE id=:id"
+    correct = db.session.execute(sql, {"id":card_id}).fetchone()[0]
+    result = 1 if answer == correct else 0
+    sql = "INSERT INTO answers (user_id, card_id, sent_at, result) VALUES (:user_id, :card_id, NOW(), :result)"
+    db.session.execute(sql, {"user_id":user_id, "card_id":card_id, "result":result})

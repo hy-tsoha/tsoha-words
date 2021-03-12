@@ -18,8 +18,23 @@ def add():
 
 @app.route("/deck/<int:id>")
 def deck(id):
-    deck = decks.get_deck(id)
-    return render_template("deck.html", name=deck[0], creator=deck[1], size=deck[2])
+    info = decks.get_deck_info(id)
+    size = decks.get_deck_size(id)
+    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size)
+
+@app.route("/play/<int:id>")
+def play(id):
+    card = decks.get_random_card(id)
+    return render_template("play.html", deck_id=id, card_id=card[0], question=card[1])
+
+@app.route("/result", methods=["post"])
+def result():
+    deck_id = request.form["deck_id"]
+    card_id = request.form["card_id"]
+    answer = request.form["answer"].strip()
+    decks.send_answer(card_id, answer, users.user_id())
+    words = decks.get_card_words(card_id)
+    return render_template("result.html", deck_id=deck_id, question=words[0], answer=answer, correct=words[1])
 
 @app.route("/login", methods=["get", "post"])
 def login():

@@ -1,0 +1,11 @@
+Annoit käännöksen <b>{{ answer }}</b> sanalle <b>{{ question }}</b>.
+<p>
+
+{% if answer == correct %}
+Hienoa, se oli oikein!
+{% else %}
+Väärin meni! Käännös olisi ollut <b>{{ correct }}</b>.
+{% endif %}
+
+<p>
+<a href="/play/{{ deck_id }}">Jatka pelaamista</a>
