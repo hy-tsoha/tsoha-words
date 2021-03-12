@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Poista pakka</h2>
+
+<form action="/remove" method="post">
+
+<p>Minkä pakan haluat poistaa?</p>
+
+{% for deck in list %}
+
+<input type="radio" name="deck" value="{{ deck.id }}"> {{ deck.name }} <br>
+
+{% endfor %}
+
+<p>
+
+<input type="submit" value="Poista">
+
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
+</form>
+
+<p>
+<a href="/">Palaa takaisin</a>
+
+{% endblock %}

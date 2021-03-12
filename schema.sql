@@ -8,7 +8,8 @@ CREATE TABLE users (
 CREATE TABLE decks (
     id SERIAL PRIMARY KEY,
     creator_id INTEGER REFERENCES users,
-    name TEXT
+    name TEXT,
+    visible INTEGER
 );
 
 CREATE TABLE cards (

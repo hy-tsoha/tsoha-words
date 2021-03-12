@@ -5,7 +5,7 @@ def get_deck_stats(deck_id, user_id):
     return db.session.execute(sql, {"deck_id":deck_id, "user_id":user_id}).fetchone()
 
 def get_full_stats(user_id):
-    sql = "SELECT id, name FROM decks WHERE creator_id=:user_id ORDER BY name"
+    sql = "SELECT id, name FROM decks WHERE creator_id=:user_id AND visible=1 ORDER BY name"
     decks = db.session.execute(sql, {"user_id": user_id}).fetchall()
     data = []
     for deck in decks:

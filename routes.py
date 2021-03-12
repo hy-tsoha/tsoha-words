@@ -4,7 +4,7 @@ import decks, stats, users
 
 @app.route("/")
 def index():
-    return render_template("index.html", decks=decks.get_list())
+    return render_template("index.html", decks=decks.get_decks())
 
 @app.route("/add", methods=["get", "post"])
 def add_deck():
@@ -19,8 +19,21 @@ def add_deck():
         words = request.form["words"]
         if len(words) > 10000:
             return render_template("error.html", message="Sanalista on liian pitkä")
-        deck_id = decks.create(name, words, users.user_id())
+        deck_id = decks.add_deck(name, words, users.user_id())
         return redirect("/deck/"+str(deck_id))
+
+@app.route("/remove", methods=["get", "post"])
+def remove_deck():
+    users.require_role(2)
+    if request.method == "GET":
+        list = decks.get_my_decks(users.user_id())
+        return render_template("remove.html", list=list)
+    if request.method == "POST":
+        users.check_csrf()
+        if "deck" in request.form:
+            deck = request.form["deck"]
+            decks.remove_deck(deck, users.user_id())
+        return redirect("/")
 
 @app.route("/deck/<int:id>")
 def deck(id):

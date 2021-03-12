@@ -1,8 +1,8 @@
 from db import db
 from random import randint
 
-def get_list():
-    sql = "SELECT id, name FROM decks ORDER BY name"
+def get_decks():
+    sql = "SELECT id, name FROM decks WHERE visible=1 ORDER BY name"
     return db.session.execute(sql).fetchall()
 
 def get_deck_info(id):
@@ -12,6 +12,15 @@ def get_deck_info(id):
 def get_deck_size(id):
     sql = "SELECT COUNT(*) FROM cards WHERE deck_id = :id"
     return db.session.execute(sql, {"id": id}).fetchone()[0]
+
+def get_my_decks(user_id):
+    sql = "SELECT id, name FROM decks WHERE creator_id=:user_id AND visible=1 ORDER BY name"
+    return db.session.execute(sql, {"user_id":user_id}).fetchall()
+
+def remove_deck(deck_id, user_id):
+    sql = "UPDATE decks SET visible=0 WHERE id=:id AND creator_id=:user_id"
+    db.session.execute(sql, {"id":deck_id, "user_id":user_id})
+    db.session.commit()
 
 def get_random_card(deck_id):
     size = get_deck_size(deck_id)
@@ -23,8 +32,8 @@ def get_card_words(id):
     sql = "SELECT word1, word2 FROM cards WHERE id=:id"
     return db.session.execute(sql, {"id":id}).fetchone()
 
-def create(name, words, creator_id):
-    sql = "INSERT INTO decks (creator_id, name) VALUES (:creator_id, :name) RETURNING id"
+def add_deck(name, words, creator_id):
+    sql = "INSERT INTO decks (creator_id, name, visible) VALUES (:creator_id, :name, 1) RETURNING id"
     deck_id = db.session.execute(sql, {"creator_id":creator_id, "name":name}).fetchone()[0]
 
     for pair in words.split("\n"):
