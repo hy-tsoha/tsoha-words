@@ -7,7 +7,7 @@ def index():
     return render_template("index.html", decks=decks.get_list())
 
 @app.route("/add", methods=["get", "post"])
-def add():
+def add_deck():
     if request.method == "GET":
         return render_template("add.html")
     if request.method == "POST":
@@ -20,7 +20,7 @@ def add():
 def deck(id):
     info = decks.get_deck_info(id)
     size = decks.get_deck_size(id)
-    total, correct = stats.get_my_stats(id, users.user_id())
+    total, correct = stats.get_deck_stats(id, users.user_id())
     return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size, total=total, correct=correct)
 
 @app.route("/play/<int:id>")
@@ -71,3 +71,8 @@ def register():
             return redirect("/")
         else:
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
+
+@app.route("/stats")
+def show_stats():
+    data = stats.get_full_stats(users.user_id())
+    return render_template("stats.html", data=data)

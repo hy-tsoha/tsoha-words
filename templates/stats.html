@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Tilastot</h2>
+
+{% for entry in data %}
+<h3>Pakka {{ entry[0] }}</h3>
+<table>
+<tr>
+<th>opiskelija</th>
+<th>pelatut kortit</th>
+<th>oikein kpl</th>
+<th>väärin kpl</th>
+</tr>
+{% for user in entry[1] %}
+<tr>
+<td>{{ user[0] }}</td>
+<td>{{ user[1] }}</td>
+<td>{{ user[2] }}</td>
+<td>{{ user[1]-user[2] }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endfor %}
+
+<p>
+<a href="/">Palaa takaisin</a>
+
+{% endblock %}
