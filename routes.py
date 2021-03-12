@@ -9,6 +9,7 @@ def index():
 @app.route("/add", methods=["get", "post"])
 def add_deck():
     users.require_role(2)
+    users.check_csrf()
     if request.method == "GET":
         return render_template("add.html")
     if request.method == "POST":
@@ -37,6 +38,7 @@ def play(id):
 @app.route("/result", methods=["post"])
 def result():
     users.require_role(1)
+    users.check_csrf()
     deck_id = request.form["deck_id"]
     card_id = request.form["card_id"]
     answer = request.form["answer"].strip()
