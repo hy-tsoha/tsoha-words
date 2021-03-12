@@ -1,11 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+
 <h2>Tee uusi pakka</h2>
 
 <form action="/add" method="post">
 
-<p>Pakan nimi:
+<p>Pakan nimi:<br>
 <input type="text" name="name"></p>
 
-<p>Sanaparit:
+<p>Sanaparit:<br>
 <textarea name="words" rows="8" cols="40">
 apina;monkey
 banaani;banana
@@ -16,4 +19,7 @@ cembalo;harpsichord
 
 </form>
 
-<a href="/">Takaisin</a>
+<p>
+<a href="/">Palaa takaisin</a>
+
+{% endblock %}

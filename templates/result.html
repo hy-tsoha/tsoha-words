@@ -1,3 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Tulos</h2>
+
 Annoit käännöksen <b>{{ answer }}</b> sanalle <b>{{ question }}</b>.
 <p>
 
@@ -8,4 +13,7 @@ Väärin meni! Käännös olisi ollut <b>{{ correct }}</b>.
 {% endif %}
 
 <p>
-<a href="/play/{{ deck_id }}">Jatka pelaamista</a>
+<a href="/play/{{ deck_id }}">Jatka pelaamista</a> |
+<a href="/deck/{{ deck_id }}">Palaa takaisin</a>
+
+{% endblock %}

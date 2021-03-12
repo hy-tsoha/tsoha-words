@@ -1,6 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Seuraava kortti</h2>
+
 <form action="/result" method="post">
 
-<p>Kirjoita käännös sanalle <b>{{ question }}</b>:
+<p>Kirjoita käännös sanalle <b>{{ question }}</b>:<br>
 <input type="text" name="answer"></p>
 
 <input type="hidden" name="deck_id" value="{{ deck_id }}">
@@ -9,3 +14,5 @@
 <input type="submit" value="Lähetä">
 
 </form>
+
+{% endblock %}

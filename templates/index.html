@@ -1,4 +1,17 @@
-Valitse pakka:
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Etusivu</h2>
+
+{% if session.user_id %}
+Olet kirjautunut sisään nimellä <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
+{% else %}
+Et ole kirjautunut sisään. <a href="/login">Kirjaudu sisään</a>
+{% endif %}
+
+<p>
+
+Valitse pakka, jota haluat harjoitella:
 
 <ul>
 {% for deck in decks %}
@@ -6,7 +19,11 @@ Valitse pakka:
 {% endfor %}
 </ul>
 
+{% if session.user_role == 2 %}
+<h3>Opettajan toiminnot</h3>
 <ul>
-<li> <a href="/login">Kirjaudu sisään</a>
 <li> <a href="/add">Tee uusi pakka</a>
 </ul>
+{% endif %}
+
+{% endblock %}
