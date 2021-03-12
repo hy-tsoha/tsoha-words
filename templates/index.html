@@ -1,0 +1,12 @@
+Valitse pakka:
+
+<ul>
+{% for deck in decks %}
+<li><a href="/deck/{{ deck.id }}">{{ deck.name }}</a>
+{% endfor %}
+</ul>
+
+<ul>
+<li> <a href="/login">Kirjaudu sisään</a>
+<li> <a href="/add">Tee uusi pakka</a>
+</ul>

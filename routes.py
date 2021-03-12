@@ -1,12 +1,27 @@
 from app import app
 from flask import render_template, request, redirect
-import users
+import decks, users
 
 @app.route("/")
 def index():
-    return ""
+    return render_template("index.html", decks=decks.get_list())
 
-@app.route("/login", methods=["get","post"])
+@app.route("/add", methods=["get", "post"])
+def add():
+    if request.method == "GET":
+        return render_template("add.html")
+    if request.method == "POST":
+        name = request.form["name"]
+        words = request.form["words"]
+        deck_id = decks.create(name, words, users.user_id())
+        return redirect("/deck/"+str(deck_id))
+
+@app.route("/deck/<int:id>")
+def deck(id):
+    deck = decks.get_deck(id)
+    return render_template("deck.html", name=deck[0], creator=deck[1], size=deck[2])
+
+@app.route("/login", methods=["get", "post"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
