@@ -116,7 +116,7 @@ def logout():
     users.logout()
     return redirect("/")
 
-@app.route("/register", methods=["get","post"])
+@app.route("/register", methods=["get", "post"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
