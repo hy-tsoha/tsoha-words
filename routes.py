@@ -138,7 +138,7 @@ def register():
             return render_template("error.html", message="Salasana on tyhjä")
 
         role = request.form["role"]
-        if role != "1" and role != "2":
+        if role not in ("1", "2"):
             return render_template("error.html", message="Tuntematon käyttäjärooli")
 
         if users.register(username, password1, role):
