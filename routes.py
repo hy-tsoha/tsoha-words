@@ -110,10 +110,9 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        if users.login(username, password):
-            return redirect("/")
-        else:
+        if not users.login(username, password):
             return render_template("error.html", message="Väärä tunnus tai salasana")
+        return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -141,10 +140,9 @@ def register():
         if role not in ("1", "2"):
             return render_template("error.html", message="Tuntematon käyttäjärooli")
 
-        if users.register(username, password1, role):
-            return redirect("/")
-        else:
+        if not users.register(username, password1, role):
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
+        return redirect("/")
 
 @app.route("/stats")
 def show_stats():
