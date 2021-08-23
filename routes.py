@@ -34,8 +34,8 @@ def remove_deck():
     users.require_role(2)
 
     if request.method == "GET":
-        list = decks.get_my_decks(users.user_id())
-        return render_template("remove.html", list=list)
+        my_decks = decks.get_my_decks(users.user_id())
+        return render_template("remove.html", list=my_decks)
 
     if request.method == "POST":
         users.check_csrf()
@@ -46,16 +46,16 @@ def remove_deck():
 
         return redirect("/")
 
-@app.route("/deck/<int:id>")
-def deck(id):
-    info = decks.get_deck_info(id)
-    size = decks.get_deck_size(id)
+@app.route("/deck/<int:deck_id>")
+def show_deck(deck_id):
+    info = decks.get_deck_info(deck_id)
+    size = decks.get_deck_size(deck_id)
 
-    total, correct = stats.get_deck_stats(id, users.user_id())
+    total, correct = stats.get_deck_stats(deck_id, users.user_id())
 
-    reviews = decks.get_reviews(id)
+    reviews = decks.get_reviews(deck_id)
 
-    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size,
+    return render_template("deck.html", id=deck_id, name=info[0], creator=info[1], size=size,
                            total=total, correct=correct, reviews=reviews)
 
 @app.route("/review", methods=["post"])
@@ -79,12 +79,12 @@ def review():
 
     return redirect("/deck/"+str(deck_id))
 
-@app.route("/play/<int:id>")
-def play(id):
+@app.route("/play/<int:deck_id>")
+def play(deck_id):
     users.require_role(1)
 
-    card = decks.get_random_card(id)
-    return render_template("play.html", deck_id=id, card_id=card[0], question=card[1])
+    card = decks.get_random_card(deck_id)
+    return render_template("play.html", deck_id=deck_id, card_id=card[0], question=card[1])
 
 @app.route("/result", methods=["post"])
 def result():
