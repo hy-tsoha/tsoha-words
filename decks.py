@@ -1,5 +1,5 @@
-from db import db
 from random import randint
+from db import db
 
 def get_all_decks():
     sql = "SELECT id, name FROM decks WHERE visible=1 ORDER BY name"

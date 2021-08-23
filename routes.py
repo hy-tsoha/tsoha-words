@@ -1,6 +1,8 @@
 from app import app
 from flask import render_template, request, redirect
-import decks, stats, users
+import decks
+import stats
+import users
 
 @app.route("/")
 def index():
