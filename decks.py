@@ -69,5 +69,6 @@ def get_reviews(deck_id):
 def add_review(deck_id, user_id, stars, comment):
     sql = """INSERT INTO reviews (deck_id, user_id, stars, comment)
              VALUES (:deck_id, :user_id, :stars, :comment)"""
-    db.session.execute(sql, {"deck_id":deck_id, "user_id":user_id, "stars":stars, "comment":comment})
+    db.session.execute(sql, {"deck_id":deck_id, "user_id":user_id,
+                             "stars":stars, "comment":comment})
     db.session.commit()

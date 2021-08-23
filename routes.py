@@ -53,7 +53,8 @@ def deck(id):
 
     reviews = decks.get_reviews(id)
 
-    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size, total=total, correct=correct, reviews=reviews)
+    return render_template("deck.html", id=id, name=info[0], creator=info[1], size=size,
+                           total=total, correct=correct, reviews=reviews)
 
 @app.route("/review", methods=["post"])
 def review():
@@ -95,7 +96,8 @@ def result():
     decks.send_answer(card_id, answer, users.user_id())
     words = decks.get_card_words(card_id)
 
-    return render_template("result.html", deck_id=deck_id, question=words[0], answer=answer, correct=words[1])
+    return render_template("result.html", deck_id=deck_id, question=words[0],
+                           answer=answer, correct=words[1])
 
 @app.route("/login", methods=["get", "post"])
 def login():
